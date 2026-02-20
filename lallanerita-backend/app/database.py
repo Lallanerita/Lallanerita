@@ -114,6 +114,17 @@ async def init_db():
         """)
 
         await db.execute("""
+            CREATE TABLE IF NOT EXISTS services (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                description TEXT,
+                icon TEXT DEFAULT 'Store',
+                display_order INTEGER DEFAULT 0,
+                is_active INTEGER DEFAULT 1
+            )
+        """)
+
+        await db.execute("""
             CREATE TABLE IF NOT EXISTS banners (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 image_url TEXT NOT NULL,

@@ -90,5 +90,12 @@ export const api = {
     request(`/banners/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteBanner: (id: number) => request(`/banners/${id}`, { method: "DELETE" }),
 
+  getServices: (active_only: boolean = true) => request(`/services?active_only=${active_only}`),
+  createService: (data: Record<string, unknown>) =>
+    request("/services", { method: "POST", body: JSON.stringify(data) }),
+  updateService: (id: number, data: Record<string, unknown>) =>
+    request(`/services/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteService: (id: number) => request(`/services/${id}`, { method: "DELETE" }),
+
   getFileUrl: (path: string) => `${API_URL}${path}`,
 };

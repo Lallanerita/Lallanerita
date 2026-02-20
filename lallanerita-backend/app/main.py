@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import init_db
-from app.routers import auth, categories, products, promotions, orders, users, uploads, banners
+from app.routers import auth, categories, products, promotions, orders, users, uploads, banners, services
 
 
 @asynccontextmanager
@@ -29,6 +29,7 @@ app.include_router(orders.router)
 app.include_router(users.router)
 app.include_router(uploads.router)
 app.include_router(banners.router)
+app.include_router(services.router)
 
 
 @app.get("/healthz")

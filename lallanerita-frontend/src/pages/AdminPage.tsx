@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Package, Tag, Users, ShoppingCart, Image, ImagePlus } from "lucide-react";
+import { Plus, Pencil, Trash2, Package, Tag, Users, ShoppingCart, Image, ImagePlus, Settings } from "lucide-react";
 
 function formatCOP(n: number) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
@@ -438,6 +438,67 @@ function BannersTab() {
   );
 }
 
+const ICON_OPTIONS = ["Store", "ShoppingBag", "Truck", "Package", "Heart", "Star", "Zap", "MessageCircle"];
+
+function ServicesTab() {
+  const [services, setServices] = useState<{ id: number; title: string; description: string | null; icon: string; display_order: number; is_active: number }[]>([]);
+  const [editing, setEditing] = useState<{ id: number } | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ title: "", description: "", icon: "Store", display_order: "0" });
+
+  useEffect(() => { api.getServices(false).then(setServices); }, []);
+
+  const resetForm = () => { setForm({ title: "", description: "", icon: "Store", display_order: "0" }); setEditing(null); setShowForm(false); };
+
+  const handleSave = async () => {
+    const data = { title: form.title, description: form.description, icon: form.icon, display_order: Number(form.display_order) };
+    if (editing) { await api.updateService(editing.id, data); } else { await api.createService(data); }
+    api.getServices(false).then(setServices); resetForm();
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-bold text-white">Servicios ({services.length})</h2>
+        <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-black" onClick={() => { resetForm(); setShowForm(true); }}><Plus className="h-4 w-4 mr-1" /> Nuevo</Button>
+      </div>
+      <Dialog open={showForm} onOpenChange={() => resetForm()}>
+        <DialogContent className="bg-gray-900 border-gray-700 text-white">
+          <DialogHeader><DialogTitle className="text-amber-400">{editing ? "Editar" : "Nuevo"} Servicio</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><Label className="text-gray-300">Titulo *</Label><Input className="bg-gray-800 border-gray-700 text-white" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
+            <div><Label className="text-gray-300">Descripcion</Label><Textarea className="bg-gray-800 border-gray-700 text-white" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
+            <div>
+              <Label className="text-gray-300">Icono</Label>
+              <select className="w-full rounded-md bg-gray-800 border border-gray-700 text-white p-2 text-sm" value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })}>
+                {ICON_OPTIONS.map((ic) => <option key={ic} value={ic}>{ic}</option>)}
+              </select>
+            </div>
+            <div><Label className="text-gray-300">Orden</Label><Input type="number" className="bg-gray-800 border-gray-700 text-white" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: e.target.value })} /></div>
+            <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold" onClick={handleSave} disabled={!form.title}>{editing ? "Guardar" : "Crear"}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <div className="space-y-2">
+        {services.map((s) => (
+          <Card key={s.id} className={`bg-gray-900 border-gray-800 ${!s.is_active ? "opacity-50" : ""}`}>
+            <CardContent className="p-3 flex items-center justify-between">
+              <div>
+                <p className="font-semibold text-white text-sm">{s.title}</p>
+                <p className="text-xs text-gray-400">{s.description} | Icono: {s.icon}</p>
+              </div>
+              <div className="flex gap-1">
+                <Button size="sm" variant="ghost" className="text-gray-400 h-8 w-8 p-0" onClick={() => { setForm({ title: s.title, description: s.description || "", icon: s.icon, display_order: String(s.display_order) }); setEditing(s); setShowForm(true); }}><Pencil className="h-4 w-4" /></Button>
+                <Button size="sm" variant="ghost" className="text-red-400 h-8 w-8 p-0" onClick={async () => { if (confirm("Eliminar?")) { await api.deleteService(s.id); api.getServices(false).then(setServices); } }}><Trash2 className="h-4 w-4" /></Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function UsersTab() {
   const [users, setUsers] = useState<User[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -505,6 +566,7 @@ export default function AdminPage() {
             <TabsTrigger value="orders" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><ShoppingCart className="h-3 w-3 mr-1" />Pedidos</TabsTrigger>
             <TabsTrigger value="promotions" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><Tag className="h-3 w-3 mr-1" />Promos</TabsTrigger>
             <TabsTrigger value="banners" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><ImagePlus className="h-3 w-3 mr-1" />Banners</TabsTrigger>
+            <TabsTrigger value="services" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><Settings className="h-3 w-3 mr-1" />Servicios</TabsTrigger>
             <TabsTrigger value="users" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><Users className="h-3 w-3 mr-1" />Usuarios</TabsTrigger>
           </TabsList>
           <TabsContent value="products"><ProductsTab /></TabsContent>
@@ -512,6 +574,7 @@ export default function AdminPage() {
           <TabsContent value="orders"><OrdersTab /></TabsContent>
           <TabsContent value="promotions"><PromotionsTab /></TabsContent>
           <TabsContent value="banners"><BannersTab /></TabsContent>
+          <TabsContent value="services"><ServicesTab /></TabsContent>
           <TabsContent value="users"><UsersTab /></TabsContent>
         </Tabs>
       </div>

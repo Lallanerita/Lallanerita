@@ -1,10 +1,31 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, MessageCircle, Store, Truck } from "lucide-react";
+import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap } from "lucide-react";
 import HeroBanner from "../components/HeroBanner";
+import { api } from "../services/api";
+
+interface Service { id: number; title: string; description: string | null; icon: string; display_order: number; }
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Store, ShoppingBag, Truck, Package, Heart, Star, Zap, MessageCircle,
+};
+
+const DEFAULT_SERVICES = [
+  { id: 0, title: "Catalogo Online", description: "Explora nuestra amplia variedad de productos actualizados.", icon: "Store" },
+  { id: 0, title: "Pedidos Faciles", description: "Realiza tu pedido en minutos desde tu celular o computador.", icon: "ShoppingBag" },
+  { id: 0, title: "Entrega Rapida", description: "Recibe tus productos de forma rapida y segura.", icon: "Truck" },
+];
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [services, setServices] = useState<Service[]>([]);
+
+  useEffect(() => {
+    api.getServices(true).then(setServices).catch(() => {});
+  }, []);
+
+  const displayServices = services.length > 0 ? services : DEFAULT_SERVICES;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -48,30 +69,22 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl font-bold text-center mb-12 text-amber-400">Nuestros Servicios</h2>
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="flex flex-col items-center text-center p-6 bg-gray-900 rounded-xl border border-gray-800">
-              <Store className="h-12 w-12 text-amber-500 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Catalogo Online</h3>
-              <p className="text-gray-400">Explora nuestra amplia variedad de productos actualizados.</p>
-            </div>
-            <div className="flex flex-col items-center text-center p-6 bg-gray-900 rounded-xl border border-gray-800">
-              <ShoppingBag className="h-12 w-12 text-amber-500 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Pedidos Faciles</h3>
-              <p className="text-gray-400">Realiza tu pedido en minutos desde tu celular o computador.</p>
-            </div>
-            <div className="flex flex-col items-center text-center p-6 bg-gray-900 rounded-xl border border-gray-800">
-              <Truck className="h-12 w-12 text-amber-500 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Entrega Rapida</h3>
-              <p className="text-gray-400">Recibe tus productos de forma rapida y segura.</p>
-            </div>
+            {displayServices.map((s, i) => {
+              const Icon = ICON_MAP[s.icon] || Store;
+              return (
+                <div key={s.id || i} className="flex flex-col items-center text-center p-6 bg-gray-900 rounded-xl border border-gray-800">
+                  <Icon className="h-12 w-12 text-amber-500 mb-4" />
+                  <h3 className="text-xl font-bold mb-2">{s.title}</h3>
+                  <p className="text-gray-400">{s.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       <footer className="bg-black border-t border-gray-800 py-8 px-4 text-center text-gray-500">
         <p>&copy; 2026 Lallanerita.co - Todos los derechos reservados</p>
-        <a href="https://wa.link/mv45ai" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline mt-2 inline-block">
-          WhatsApp: Contactanos
-        </a>
       </footer>
     </div>
   );
