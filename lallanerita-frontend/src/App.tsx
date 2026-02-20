@@ -8,12 +8,14 @@ import CatalogPage from "./pages/CatalogPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrdersPage from "./pages/OrdersPage";
 import AdminPage from "./pages/AdminPage";
+import WhatsAppBubble from "./components/WhatsAppBubble";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
+          <WhatsAppBubble />
           <Routes>
             <Route path="/" element={<><Navbar /><LandingPage /></>} />
             <Route path="/login" element={<LoginPage />} />

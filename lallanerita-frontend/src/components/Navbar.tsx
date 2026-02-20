@@ -27,9 +27,8 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-gray-950 border-b border-gray-800">
       <div className="mx-auto max-w-6xl px-4 flex items-center justify-between h-14">
-        <Link to="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="La Llanerita" className="h-8 w-8 rounded-full object-cover" />
-          <span className="font-bold text-white text-lg">La Llanerita</span>
+        <Link to="/" className="flex items-center">
+          <img src="/logo.png" alt="La Llanerita" className="h-10 object-contain" />
         </Link>
 
         <div className="hidden md:flex items-center gap-1">
