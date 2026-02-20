@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Package, Tag, Users, ShoppingCart, Image } from "lucide-react";
+import { Plus, Pencil, Trash2, Package, Tag, Users, ShoppingCart, Image, ImagePlus } from "lucide-react";
 
 function formatCOP(n: number) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
@@ -357,6 +357,87 @@ function PromotionsTab() {
   );
 }
 
+interface Banner { id: number; image_url: string; alt: string | null; display_order: number; is_active: number; }
+
+function BannersTab() {
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Banner | null>(null);
+  const [form, setForm] = useState({ image_url: "", alt: "", display_order: "0" });
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => { api.getBanners(false).then(setBanners); }, []);
+
+  const resetForm = () => { setForm({ image_url: "", alt: "", display_order: "0" }); setEditing(null); setShowForm(false); };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const res = await api.uploadFile(file);
+      setForm((prev) => ({ ...prev, image_url: res.url }));
+    } catch { /* ignore */ }
+    setUploading(false);
+  };
+
+  const handleSave = async () => {
+    const data = { image_url: form.image_url, alt: form.alt, display_order: Number(form.display_order) };
+    if (editing) { await api.updateBanner(editing.id, data); } else { await api.createBanner(data); }
+    api.getBanners(false).then(setBanners); resetForm();
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-bold text-white">Banners ({banners.length})</h2>
+        <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-black" onClick={() => { resetForm(); setShowForm(true); }}><Plus className="h-4 w-4 mr-1" /> Nuevo</Button>
+      </div>
+      <Dialog open={showForm} onOpenChange={() => resetForm()}>
+        <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-lg">
+          <DialogHeader><DialogTitle className="text-amber-400">{editing ? "Editar" : "Nuevo"} Banner</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label className="text-gray-300">Imagen *</Label>
+              <div className="flex gap-2 items-center">
+                <Input className="bg-gray-800 border-gray-700 text-white flex-1" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="URL o subir archivo" />
+                <label className="cursor-pointer">
+                  <input type="file" className="hidden" accept="image/*" onChange={handleUpload} />
+                  <Button size="sm" variant="outline" className="border-gray-700" asChild disabled={uploading}><span><Image className="h-4 w-4" /></span></Button>
+                </label>
+              </div>
+              {form.image_url && <img src={form.image_url.startsWith("http") ? form.image_url : `${import.meta.env.VITE_API_URL || "http://localhost:8000"}${form.image_url}`} alt="Preview" className="mt-2 w-full h-32 object-cover rounded-lg" />}
+            </div>
+            <div><Label className="text-gray-300">Texto alternativo</Label><Input className="bg-gray-800 border-gray-700 text-white" value={form.alt} onChange={(e) => setForm({ ...form, alt: e.target.value })} placeholder="Ej: Promocion carnes de res" /></div>
+            <div><Label className="text-gray-300">Orden</Label><Input type="number" className="bg-gray-800 border-gray-700 text-white" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: e.target.value })} /></div>
+            <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold" onClick={handleSave} disabled={!form.image_url}>{editing ? "Guardar" : "Crear"}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <div className="space-y-2">
+        {banners.map((b) => (
+          <Card key={b.id} className={`bg-gray-900 border-gray-800 ${!b.is_active ? "opacity-50" : ""}`}>
+            <CardContent className="p-3 flex items-center gap-3">
+              <div className="h-16 w-28 rounded bg-gray-800 flex-shrink-0 overflow-hidden">
+                <img src={b.image_url.startsWith("http") ? b.image_url : `${import.meta.env.VITE_API_URL || "http://localhost:8000"}${b.image_url}`} alt={b.alt || ""} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-white text-sm truncate">{b.alt || "Sin texto"}</p>
+                <p className="text-xs text-gray-400">Orden: {b.display_order} | {b.is_active ? "Activo" : "Inactivo"}</p>
+              </div>
+              <Button size="sm" variant="ghost" className="text-gray-400 h-8 w-8 p-0" onClick={() => {
+                setForm({ image_url: b.image_url, alt: b.alt || "", display_order: String(b.display_order) });
+                setEditing(b); setShowForm(true);
+              }}><Pencil className="h-4 w-4" /></Button>
+              <Button size="sm" variant="ghost" className="text-red-400 h-8 w-8 p-0" onClick={async () => { if (confirm("Eliminar banner?")) { await api.deleteBanner(b.id); api.getBanners(false).then(setBanners); } }}><Trash2 className="h-4 w-4" /></Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function UsersTab() {
   const [users, setUsers] = useState<User[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -423,12 +504,14 @@ export default function AdminPage() {
             <TabsTrigger value="categories" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><Tag className="h-3 w-3 mr-1" />Categorias</TabsTrigger>
             <TabsTrigger value="orders" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><ShoppingCart className="h-3 w-3 mr-1" />Pedidos</TabsTrigger>
             <TabsTrigger value="promotions" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><Tag className="h-3 w-3 mr-1" />Promos</TabsTrigger>
+            <TabsTrigger value="banners" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><ImagePlus className="h-3 w-3 mr-1" />Banners</TabsTrigger>
             <TabsTrigger value="users" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black text-xs"><Users className="h-3 w-3 mr-1" />Usuarios</TabsTrigger>
           </TabsList>
           <TabsContent value="products"><ProductsTab /></TabsContent>
           <TabsContent value="categories"><CategoriesTab /></TabsContent>
           <TabsContent value="orders"><OrdersTab /></TabsContent>
           <TabsContent value="promotions"><PromotionsTab /></TabsContent>
+          <TabsContent value="banners"><BannersTab /></TabsContent>
           <TabsContent value="users"><UsersTab /></TabsContent>
         </Tabs>
       </div>

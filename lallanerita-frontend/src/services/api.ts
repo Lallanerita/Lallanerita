@@ -83,5 +83,12 @@ export const api = {
     return request("/uploads", { method: "POST", body: formData });
   },
 
+  getBanners: (active_only: boolean = true) => request(`/banners?active_only=${active_only}`),
+  createBanner: (data: Record<string, unknown>) =>
+    request("/banners", { method: "POST", body: JSON.stringify(data) }),
+  updateBanner: (id: number, data: Record<string, unknown>) =>
+    request(`/banners/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteBanner: (id: number) => request(`/banners/${id}`, { method: "DELETE" }),
+
   getFileUrl: (path: string) => `${API_URL}${path}`,
 };

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, MessageCircle, Store, Truck } from "lucide-react";
+import HeroBanner from "../components/HeroBanner";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -40,6 +41,8 @@ export default function LandingPage() {
           </Button>
         </div>
       </section>
+
+      <HeroBanner />
 
       <section className="bg-gray-950 py-16 px-4">
         <div className="mx-auto max-w-5xl">
