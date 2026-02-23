@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 import aiosqlite
 from app.database import get_db
-from app.utils.auth import get_current_admin
+from app.utils.auth import get_admin_user
 
 router = APIRouter(prefix="/services", tags=["services"])
 
@@ -35,7 +35,7 @@ async def get_services(active_only: bool = True, db: aiosqlite.Connection = Depe
 
 
 @router.post("")
-async def create_service(data: ServiceCreate, db: aiosqlite.Connection = Depends(get_db), _=Depends(get_current_admin)):
+async def create_service(data: ServiceCreate, db: aiosqlite.Connection = Depends(get_db), _=Depends(get_admin_user)):
     cursor = await db.execute(
         "INSERT INTO services (title, description, icon, display_order, is_active) VALUES (?, ?, ?, ?, ?)",
         (data.title, data.description, data.icon, data.display_order, 1 if data.is_active else 0)
@@ -48,7 +48,7 @@ async def create_service(data: ServiceCreate, db: aiosqlite.Connection = Depends
 
 
 @router.put("/{service_id}")
-async def update_service(service_id: int, data: ServiceUpdate, db: aiosqlite.Connection = Depends(get_db), _=Depends(get_current_admin)):
+async def update_service(service_id: int, data: ServiceUpdate, db: aiosqlite.Connection = Depends(get_db), _=Depends(get_admin_user)):
     cursor = await db.execute("SELECT * FROM services WHERE id = ?", (service_id,))
     existing = await cursor.fetchone()
     if not existing:
@@ -83,7 +83,7 @@ async def update_service(service_id: int, data: ServiceUpdate, db: aiosqlite.Con
 
 
 @router.delete("/{service_id}")
-async def delete_service(service_id: int, db: aiosqlite.Connection = Depends(get_db), _=Depends(get_current_admin)):
+async def delete_service(service_id: int, db: aiosqlite.Connection = Depends(get_db), _=Depends(get_admin_user)):
     await db.execute("DELETE FROM services WHERE id = ?", (service_id,))
     await db.commit()
     return {"detail": "Servicio eliminado"}
