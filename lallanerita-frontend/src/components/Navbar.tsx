@@ -34,7 +34,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1">
           {navLink("/", "Inicio", <Home className="h-4 w-4" />)}
           {navLink("/catalogo", "Catalogo", <ShoppingCart className="h-4 w-4" />)}
-          {user && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
+          {isAdmin && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
           {isAdmin && navLink("/admin", "Admin", <Shield className="h-4 w-4" />)}
         </div>
 
@@ -69,7 +69,7 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3 space-y-1">
           {navLink("/", "Inicio", <Home className="h-4 w-4" />)}
           {navLink("/catalogo", "Catalogo", <ShoppingCart className="h-4 w-4" />)}
-          {user && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
+          {isAdmin && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
           {isAdmin && navLink("/admin", "Admin", <Shield className="h-4 w-4" />)}
           {user ? (
             <button className="flex items-center gap-1.5 px-3 py-2 text-sm text-red-500 w-full" onClick={() => { logout(); navigate("/"); setMenuOpen(false); }}>
