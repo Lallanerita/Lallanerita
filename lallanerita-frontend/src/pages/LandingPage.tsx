@@ -30,13 +30,6 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <section className="relative flex flex-col items-center justify-center px-4 py-24 text-center bg-gradient-to-b from-blue-50 to-white">
-        <div className="mb-6 flex items-center gap-3">
-          <img src="/logo.png" alt="La Llanerita" className="h-20 w-20 rounded-full object-cover" />
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight md:text-6xl text-gray-900">LA LLANERITA</h1>
-            <p className="text-lg text-blue-600 font-semibold">.co</p>
-          </div>
-        </div>
         <p className="mx-auto max-w-2xl text-lg text-gray-500 mb-8">
           Tu tienda en linea con los mejores productos. Explora nuestro catalogo, haz tu pedido y recibelo donde estes.
         </p>
