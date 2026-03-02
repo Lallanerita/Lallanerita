@@ -112,7 +112,7 @@ export default function CatalogPage() {
                     <img
                       src={p.image_url.startsWith("http") ? p.image_url : `${API_URL}${p.image_url}`}
                       alt={p.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain p-2"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-300">
