@@ -28,22 +28,22 @@ export default function LandingPage() {
   const displayServices = services.length > 0 ? services : DEFAULT_SERVICES;
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <section className="relative flex flex-col items-center justify-center px-4 py-24 text-center">
+    <div className="min-h-screen bg-white text-gray-900">
+      <section className="relative flex flex-col items-center justify-center px-4 py-24 text-center bg-gradient-to-b from-blue-50 to-white">
         <div className="mb-6 flex items-center gap-3">
           <img src="/logo.png" alt="La Llanerita" className="h-20 w-20 rounded-full object-cover" />
           <div>
-            <h1 className="text-4xl font-bold tracking-tight md:text-6xl">LA LLANERITA</h1>
-            <p className="text-lg text-amber-400 font-semibold">.co</p>
+            <h1 className="text-4xl font-bold tracking-tight md:text-6xl text-gray-900">LA LLANERITA</h1>
+            <p className="text-lg text-blue-600 font-semibold">.co</p>
           </div>
         </div>
-        <p className="mx-auto max-w-2xl text-lg text-gray-300 mb-8">
+        <p className="mx-auto max-w-2xl text-lg text-gray-500 mb-8">
           Tu tienda en linea con los mejores productos. Explora nuestro catalogo, haz tu pedido y recibelo donde estes.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <Button
             size="lg"
-            className="bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg px-8"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8"
             onClick={() => navigate("/catalogo")}
           >
             <ShoppingBag className="mr-2 h-5 w-5" />
@@ -52,7 +52,7 @@ export default function LandingPage() {
           <Button
             size="lg"
             variant="outline"
-            className="border-amber-500 text-amber-400 hover:bg-amber-500 hover:text-black font-bold text-lg px-8"
+            className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold text-lg px-8"
             asChild
           >
             <a href="https://wa.link/mv45ai" target="_blank" rel="noopener noreferrer">
@@ -65,17 +65,17 @@ export default function LandingPage() {
 
       <HeroBanner />
 
-      <section className="bg-gray-950 py-16 px-4">
+      <section className="bg-gray-50 py-16 px-4">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-3xl font-bold text-center mb-12 text-amber-400">Nuestros Servicios</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-blue-600">Nuestros Servicios</h2>
           <div className="grid gap-8 md:grid-cols-3">
             {displayServices.map((s, i) => {
               const Icon = ICON_MAP[s.icon] || Store;
               return (
-                <div key={s.id || i} className="flex flex-col items-center text-center p-6 bg-gray-900 rounded-xl border border-gray-800">
-                  <Icon className="h-12 w-12 text-amber-500 mb-4" />
-                  <h3 className="text-xl font-bold mb-2">{s.title}</h3>
-                  <p className="text-gray-400">{s.description}</p>
+                <div key={s.id || i} className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
+                  <Icon className="h-12 w-12 text-blue-600 mb-4" />
+                  <h3 className="text-xl font-bold mb-2 text-gray-900">{s.title}</h3>
+                  <p className="text-gray-500">{s.description}</p>
                 </div>
               );
             })}
@@ -83,7 +83,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="bg-black border-t border-gray-800 py-8 px-4 text-center text-gray-500">
+      <footer className="bg-white border-t border-gray-200 py-8 px-4 text-center text-gray-400">
         <p>&copy; 2026 Lallanerita.co - Todos los derechos reservados</p>
       </footer>
     </div>

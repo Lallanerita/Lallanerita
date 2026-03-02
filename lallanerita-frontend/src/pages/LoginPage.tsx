@@ -44,30 +44,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-gray-900 border-gray-800">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-white border-gray-200 shadow-sm">
         <CardHeader className="text-center">
           <img src="/logo.png" alt="La Llanerita" className="h-16 w-16 rounded-full mx-auto mb-2 object-cover" />
-          <CardTitle className="text-2xl text-white">La Llanerita</CardTitle>
+          <CardTitle className="text-2xl text-gray-900">La Llanerita</CardTitle>
         </CardHeader>
         <CardContent>
-          {error && <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded text-red-300 text-sm">{error}</div>}
+          {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-600 text-sm">{error}</div>}
           <Tabs defaultValue="login">
-            <TabsList className="grid w-full grid-cols-2 bg-gray-800">
-              <TabsTrigger value="login" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">Ingresar</TabsTrigger>
-              <TabsTrigger value="register" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">Registrarse</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-gray-100">
+              <TabsTrigger value="login" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Ingresar</TabsTrigger>
+              <TabsTrigger value="register" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Registrarse</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4 mt-4">
                 <div>
-                  <Label className="text-gray-300">Email</Label>
-                  <Input type="email" required className="bg-gray-800 border-gray-700 text-white" value={loginData.email} onChange={(e) => setLoginData({ ...loginData, email: e.target.value })} />
+                  <Label className="text-gray-600">Email</Label>
+                  <Input type="email" required className="bg-gray-50 border-gray-300 text-gray-900" value={loginData.email} onChange={(e) => setLoginData({ ...loginData, email: e.target.value })} />
                 </div>
                 <div>
-                  <Label className="text-gray-300">Contrasena</Label>
-                  <Input type="password" required className="bg-gray-800 border-gray-700 text-white" value={loginData.password} onChange={(e) => setLoginData({ ...loginData, password: e.target.value })} />
+                  <Label className="text-gray-600">Contrasena</Label>
+                  <Input type="password" required className="bg-gray-50 border-gray-300 text-gray-900" value={loginData.password} onChange={(e) => setLoginData({ ...loginData, password: e.target.value })} />
                 </div>
-                <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold" disabled={loading}>
+                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold" disabled={loading}>
                   {loading ? "Ingresando..." : "Ingresar"}
                 </Button>
               </form>
@@ -75,26 +75,26 @@ export default function LoginPage() {
             <TabsContent value="register">
               <form onSubmit={handleRegister} className="space-y-4 mt-4">
                 <div>
-                  <Label className="text-gray-300">Nombre</Label>
-                  <Input required className="bg-gray-800 border-gray-700 text-white" value={regData.name} onChange={(e) => setRegData({ ...regData, name: e.target.value })} />
+                  <Label className="text-gray-600">Nombre</Label>
+                  <Input required className="bg-gray-50 border-gray-300 text-gray-900" value={regData.name} onChange={(e) => setRegData({ ...regData, name: e.target.value })} />
                 </div>
                 <div>
-                  <Label className="text-gray-300">Email</Label>
-                  <Input type="email" required className="bg-gray-800 border-gray-700 text-white" value={regData.email} onChange={(e) => setRegData({ ...regData, email: e.target.value })} />
+                  <Label className="text-gray-600">Email</Label>
+                  <Input type="email" required className="bg-gray-50 border-gray-300 text-gray-900" value={regData.email} onChange={(e) => setRegData({ ...regData, email: e.target.value })} />
                 </div>
                 <div>
-                  <Label className="text-gray-300">Contrasena</Label>
-                  <Input type="password" required className="bg-gray-800 border-gray-700 text-white" value={regData.password} onChange={(e) => setRegData({ ...regData, password: e.target.value })} />
+                  <Label className="text-gray-600">Contrasena</Label>
+                  <Input type="password" required className="bg-gray-50 border-gray-300 text-gray-900" value={regData.password} onChange={(e) => setRegData({ ...regData, password: e.target.value })} />
                 </div>
                 <div>
-                  <Label className="text-gray-300">Telefono</Label>
-                  <Input className="bg-gray-800 border-gray-700 text-white" value={regData.phone} onChange={(e) => setRegData({ ...regData, phone: e.target.value })} />
+                  <Label className="text-gray-600">Telefono</Label>
+                  <Input className="bg-gray-50 border-gray-300 text-gray-900" value={regData.phone} onChange={(e) => setRegData({ ...regData, phone: e.target.value })} />
                 </div>
                 <div>
-                  <Label className="text-gray-300">Direccion</Label>
-                  <Input className="bg-gray-800 border-gray-700 text-white" value={regData.address} onChange={(e) => setRegData({ ...regData, address: e.target.value })} />
+                  <Label className="text-gray-600">Direccion</Label>
+                  <Input className="bg-gray-50 border-gray-300 text-gray-900" value={regData.address} onChange={(e) => setRegData({ ...regData, address: e.target.value })} />
                 </div>
-                <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold" disabled={loading}>
+                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold" disabled={loading}>
                   {loading ? "Registrando..." : "Registrarse"}
                 </Button>
               </form>

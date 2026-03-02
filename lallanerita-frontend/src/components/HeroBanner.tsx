@@ -35,7 +35,7 @@ export default function HeroBanner() {
   const next = () => setCurrent((c) => (c + 1) % slides.length);
 
   return (
-    <section className="w-full py-6 bg-black flex justify-center px-4">
+    <section className="w-full py-6 bg-white flex justify-center px-4">
       <div className="w-full max-w-5xl">
         <div className="relative w-full overflow-hidden rounded-2xl">
           <div
@@ -56,13 +56,13 @@ export default function HeroBanner() {
 
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-amber-500/40 text-white p-2 rounded-full transition-colors cursor-pointer z-20"
+            className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-blue-600/40 text-white p-2 rounded-full transition-colors cursor-pointer z-20"
           >
             <ChevronLeft size={18} />
           </button>
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-amber-500/40 text-white p-2 rounded-full transition-colors cursor-pointer z-20"
+            className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-blue-600/40 text-white p-2 rounded-full transition-colors cursor-pointer z-20"
           >
             <ChevronRight size={18} />
           </button>
@@ -74,7 +74,7 @@ export default function HeroBanner() {
               key={i}
               onClick={() => setCurrent(i)}
               className={`w-2.5 h-2.5 rounded-full transition-colors cursor-pointer ${
-                i === current ? "bg-amber-500" : "bg-white/30"
+                i === current ? "bg-blue-600" : "bg-white/30"
               }`}
             />
           ))}

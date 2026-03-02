@@ -76,12 +76,12 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center text-white">
+      <div className="min-h-screen bg-white flex items-center justify-center text-gray-900">
         <div className="text-center">
-          <ShoppingCart className="mx-auto h-16 w-16 text-gray-600 mb-4" />
+          <ShoppingCart className="mx-auto h-16 w-16 text-gray-300 mb-4" />
           <h2 className="text-2xl font-bold mb-2">Carrito vacio</h2>
-          <p className="text-gray-400 mb-4">Agrega productos desde el catalogo</p>
-          <Button className="bg-amber-500 hover:bg-amber-600 text-black font-bold" onClick={() => navigate("/catalogo")}>
+          <p className="text-gray-500 mb-4">Agrega productos desde el catalogo</p>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold" onClick={() => navigate("/catalogo")}>
             Ir al Catalogo
           </Button>
         </div>
@@ -90,61 +90,61 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-4">
+    <div className="min-h-screen bg-gray-50 text-gray-900 p-4">
       <div className="mx-auto max-w-2xl">
-        <h1 className="text-2xl font-bold mb-6 text-amber-400">Tu Pedido</h1>
-        {error && <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded text-red-300 text-sm">{error}</div>}
+        <h1 className="text-2xl font-bold mb-6 text-blue-600">Tu Pedido</h1>
+        {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-600 text-sm">{error}</div>}
 
-        <Card className="bg-gray-900 border-gray-800 mb-6">
-          <CardHeader><CardTitle className="text-white text-lg">Productos</CardTitle></CardHeader>
+        <Card className="bg-white border-gray-200 shadow-sm mb-6">
+          <CardHeader><CardTitle className="text-gray-900 text-lg">Productos</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             {items.map((item) => (
-              <div key={item.product_id} className="flex items-center justify-between gap-3 pb-3 border-b border-gray-800 last:border-0">
+              <div key={item.product_id} className="flex items-center justify-between gap-3 pb-3 border-b border-gray-100 last:border-0">
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm truncate">{item.name}</p>
-                  <p className="text-xs text-amber-400">{formatCOP(item.final_price)} / {item.unit}</p>
+                  <p className="text-xs text-blue-600">{formatCOP(item.final_price)} / {item.unit}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Input
                     type="number"
-                    className="h-8 w-16 text-center text-sm bg-gray-800 border-gray-700 text-white"
+                    className="h-8 w-16 text-center text-sm bg-gray-50 border-gray-300 text-gray-900"
                     value={item.quantity}
                     onChange={(e) => updateQuantity(item.product_id, Number(e.target.value))}
                     min={1}
                   />
-                  <span className="text-sm text-gray-400 w-20 text-right">{formatCOP(item.final_price * item.quantity)}</span>
-                  <Button size="sm" variant="ghost" className="text-red-400 hover:text-red-300 h-8 w-8 p-0" onClick={() => removeItem(item.product_id)}>
+                  <span className="text-sm text-gray-600 w-20 text-right">{formatCOP(item.final_price * item.quantity)}</span>
+                  <Button size="sm" variant="ghost" className="text-red-500 hover:text-red-600 h-8 w-8 p-0" onClick={() => removeItem(item.product_id)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
             ))}
-            <div className="flex justify-between pt-3 border-t border-gray-700 text-lg font-bold">
+            <div className="flex justify-between pt-3 border-t border-gray-200 text-lg font-bold">
               <span>Total:</span>
-              <span className="text-amber-400">{formatCOP(total)}</span>
+              <span className="text-blue-600">{formatCOP(total)}</span>
             </div>
           </CardContent>
         </Card>
 
         {!user && (
-          <Card className="bg-gray-900 border-gray-800 mb-6">
-            <CardHeader><CardTitle className="text-white text-lg">Datos de Envio</CardTitle></CardHeader>
+          <Card className="bg-white border-gray-200 shadow-sm mb-6">
+            <CardHeader><CardTitle className="text-gray-900 text-lg">Datos de Envio</CardTitle></CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <Label className="text-gray-300">Nombre *</Label>
-                <Input required className="bg-gray-800 border-gray-700 text-white" value={guestData.guest_name} onChange={(e) => setGuestData({ ...guestData, guest_name: e.target.value })} />
+                <Label className="text-gray-600">Nombre *</Label>
+                <Input required className="bg-gray-50 border-gray-300 text-gray-900" value={guestData.guest_name} onChange={(e) => setGuestData({ ...guestData, guest_name: e.target.value })} />
               </div>
               <div>
-                <Label className="text-gray-300">Telefono *</Label>
-                <Input required className="bg-gray-800 border-gray-700 text-white" value={guestData.guest_phone} onChange={(e) => setGuestData({ ...guestData, guest_phone: e.target.value })} />
+                <Label className="text-gray-600">Telefono *</Label>
+                <Input required className="bg-gray-50 border-gray-300 text-gray-900" value={guestData.guest_phone} onChange={(e) => setGuestData({ ...guestData, guest_phone: e.target.value })} />
               </div>
               <div>
-                <Label className="text-gray-300">Direccion *</Label>
-                <Input required className="bg-gray-800 border-gray-700 text-white" value={guestData.guest_address} onChange={(e) => setGuestData({ ...guestData, guest_address: e.target.value })} />
+                <Label className="text-gray-600">Direccion *</Label>
+                <Input required className="bg-gray-50 border-gray-300 text-gray-900" value={guestData.guest_address} onChange={(e) => setGuestData({ ...guestData, guest_address: e.target.value })} />
               </div>
               <div>
-                <Label className="text-gray-300">Metodo de Pago</Label>
-                <select className="w-full rounded-md bg-gray-800 border border-gray-700 text-white p-2 text-sm" value={guestData.payment_method} onChange={(e) => setGuestData({ ...guestData, payment_method: e.target.value })}>
+                <Label className="text-gray-600">Metodo de Pago</Label>
+                <select className="w-full rounded-md bg-gray-50 border border-gray-300 text-gray-900 p-2 text-sm" value={guestData.payment_method} onChange={(e) => setGuestData({ ...guestData, payment_method: e.target.value })}>
                   <option value="efectivo">Efectivo</option>
                   <option value="transferencia">Transferencia</option>
                   <option value="nequi">Nequi</option>
@@ -155,15 +155,15 @@ export default function CheckoutPage() {
           </Card>
         )}
 
-        <Card className="bg-gray-900 border-gray-800 mb-6">
+        <Card className="bg-white border-gray-200 shadow-sm mb-6">
           <CardContent className="pt-4">
-            <Label className="text-gray-300">Notas del pedido</Label>
-            <Textarea className="bg-gray-800 border-gray-700 text-white mt-1" placeholder="Instrucciones especiales..." value={notes} onChange={(e) => setNotes(e.target.value)} />
+            <Label className="text-gray-600">Notas del pedido</Label>
+            <Textarea className="bg-gray-50 border-gray-300 text-gray-900 mt-1" placeholder="Instrucciones especiales..." value={notes} onChange={(e) => setNotes(e.target.value)} />
           </CardContent>
         </Card>
 
         <div className="flex gap-3">
-          <Button className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold" onClick={handleSubmit} disabled={loading || (!user && (!guestData.guest_name || !guestData.guest_phone || !guestData.guest_address))}>
+          <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold" onClick={handleSubmit} disabled={loading || (!user && (!guestData.guest_name || !guestData.guest_phone || !guestData.guest_address))}>
             <ShoppingCart className="mr-2 h-4 w-4" />
             {loading ? "Enviando..." : "Confirmar Pedido"}
           </Button>
