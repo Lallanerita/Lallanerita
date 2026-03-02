@@ -20,7 +20,7 @@ export default function HeroBanner() {
   }, []);
 
   const slides = banners.length > 0
-    ? banners.map((b) => ({ image: b.image_url, alt: b.alt || "" }))
+    ? banners.map((b) => ({ image: b.image_url.startsWith("http") ? b.image_url : api.getFileUrl(b.image_url), alt: b.alt || "" }))
     : DEFAULT_SLIDES;
 
   useEffect(() => {
