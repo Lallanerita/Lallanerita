@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Package, Clock, CheckCircle, Truck, XCircle, ChefHat } from "lucide-react";
+import ScrollReveal from "../components/ScrollReveal";
 
 function formatCOP(n: number) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
@@ -59,7 +60,7 @@ export default function OrdersPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-4">
       <div className="mx-auto max-w-2xl">
-        <h1 className="text-2xl font-bold mb-6 text-blue-600">Mis Pedidos</h1>
+        <ScrollReveal><h1 className="text-2xl font-bold mb-6 text-blue-600">Mis Pedidos</h1></ScrollReveal>
         {orders.length === 0 ? (
           <div className="text-center py-16 text-gray-400">
             <Package className="mx-auto h-12 w-12 mb-4" />
@@ -70,8 +71,8 @@ export default function OrdersPage() {
             {orders.map((order) => {
               const sc = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
               return (
+                <ScrollReveal key={order.id}>
                 <Card
-                  key={order.id}
                   className="bg-white border-gray-200 shadow-sm cursor-pointer hover:border-blue-300 transition-colors"
                   onClick={() => setSelected(order)}
                 >
@@ -86,6 +87,7 @@ export default function OrdersPage() {
                     </Badge>
                   </CardContent>
                 </Card>
+                </ScrollReveal>
               );
             })}
           </div>

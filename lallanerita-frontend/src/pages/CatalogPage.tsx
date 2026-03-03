@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, ShoppingCart, Plus, Minus, Tag } from "lucide-react";
+import ScrollReveal from "../components/ScrollReveal";
 
 interface Product {
   id: number;
@@ -112,7 +113,8 @@ export default function CatalogPage() {
         ) : (
           <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {products.map((p) => (
-              <Card key={p.id} className="bg-white border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              <ScrollReveal key={p.id}>
+              <Card className="bg-white border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                 <div className="relative aspect-square bg-gray-100">
                   {p.image_url ? (
                     <img
@@ -169,6 +171,7 @@ export default function CatalogPage() {
                   </Button>
                 </CardContent>
               </Card>
+              </ScrollReveal>
             ))}
           </div>
         )}

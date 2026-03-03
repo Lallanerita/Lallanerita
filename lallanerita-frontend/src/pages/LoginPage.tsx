@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ScrollReveal from "../components/ScrollReveal";
 
 export default function LoginPage() {
   const { login, register } = useAuth();
@@ -45,6 +46,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <ScrollReveal>
       <Card className="w-full max-w-md bg-white border-gray-200 shadow-sm">
         <CardHeader className="text-center">
           <img src="/logo.png" alt="La Llanerita" className="h-16 w-16 rounded-full mx-auto mb-2 object-cover" />
@@ -102,6 +104,7 @@ export default function LoginPage() {
           </Tabs>
         </CardContent>
       </Card>
+      </ScrollReveal>
     </div>
   );
 }

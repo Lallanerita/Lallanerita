@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap, MapPin, Tag, Apple, Beef, Wine, SprayCan, ShoppingBasket } from "lucide-react";
 import HeroBanner from "../components/HeroBanner";
+import ScrollReveal from "../components/ScrollReveal";
 import { api } from "../services/api";
 
 interface Service { id: number; title: string; description: string | null; icon: string; display_order: number; }
@@ -57,23 +58,26 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white text-gray-900 pb-10">
       <HeroBanner />
 
-      <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center bg-gradient-to-b from-blue-50 to-white">
-        <p className="mx-auto max-w-2xl text-lg text-gray-500 mb-8">
-          Explora nuestro catalogo, haz tu pedido y recibelo a la puerta de tu casa!
-        </p>
-        <div className="flex flex-wrap gap-4 justify-center">
-          <Button
-            size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8"
-            onClick={() => navigate("/catalogo")}
-          >
-            <ShoppingBag className="mr-2 h-5 w-5" />
-            Ver Catalogo
-          </Button>
-        </div>
-      </section>
+      <ScrollReveal>
+        <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center bg-gradient-to-b from-blue-50 to-white">
+          <p className="mx-auto max-w-2xl text-lg text-gray-500 mb-8">
+            Explora nuestro catalogo, haz tu pedido y recibelo a la puerta de tu casa!
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8"
+              onClick={() => navigate("/catalogo")}
+            >
+              <ShoppingBag className="mr-2 h-5 w-5" />
+              Ver Catalogo
+            </Button>
+          </div>
+        </section>
+      </ScrollReveal>
 
       {categories.length > 0 && (
+        <ScrollReveal>
         <section className="bg-white py-12 px-4">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">Explora por Categoria</h2>
@@ -97,9 +101,11 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
       )}
 
       {promoProducts.length > 0 && (
+        <ScrollReveal>
         <section className="bg-white py-12 px-4">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-3xl font-bold text-center mb-8 text-red-600 flex items-center justify-center gap-2">
@@ -142,9 +148,11 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
       )}
 
       {services.length > 0 && (
+        <ScrollReveal>
         <section className="bg-gray-50 py-16 px-4">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-3xl font-bold text-center mb-12 text-blue-600">Nuestros Servicios</h2>
@@ -162,14 +170,17 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
       )}
 
+      <ScrollReveal>
       <footer className="bg-white border-t border-gray-200 py-8 px-4 text-center text-gray-400">
         <p className="flex items-center justify-center gap-1 mb-2 text-gray-500">
           <MapPin className="h-4 w-4" /> Cra 6 # 7-03 La Macarena, Meta 🇨🇴
         </p>
         <p>&copy; 2026 Lallanerita.co - Todos los derechos reservados</p>
       </footer>
+      </ScrollReveal>
     </div>
   );
 }
