@@ -16,6 +16,14 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <WhatsAppBubble />
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-blue-600 overflow-hidden py-2">
+            <div className="animate-marquee whitespace-nowrap text-white font-bold text-sm md:text-base">
+              <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+              <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+              <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+              <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+            </div>
+          </div>
           <Routes>
             <Route path="/" element={<><Navbar /><LandingPage /></>} />
             <Route path="/login" element={<LoginPage />} />
