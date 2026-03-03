@@ -4,7 +4,7 @@ export default function WhatsAppBubble() {
       href="https://wa.link/mv45ai"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center justify-center h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 shadow-lg transition-transform hover:scale-110"
+      className="fixed bottom-14 right-6 z-50 flex items-center justify-center h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 shadow-lg transition-transform hover:scale-110"
       aria-label="WhatsApp"
     >
       <svg viewBox="0 0 32 32" className="h-8 w-8 fill-white">
