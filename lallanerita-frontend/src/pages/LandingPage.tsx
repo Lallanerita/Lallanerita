@@ -50,17 +50,6 @@ export default function LandingPage() {
             <ShoppingBag className="mr-2 h-5 w-5" />
             Ver Catalogo
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold text-lg px-8"
-            asChild
-          >
-            <a href="https://wa.link/mv45ai" target="_blank" rel="noopener noreferrer">
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Contactanos
-            </a>
-          </Button>
         </div>
       </section>
 
