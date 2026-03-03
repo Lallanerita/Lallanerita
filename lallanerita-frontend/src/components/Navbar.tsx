@@ -26,19 +26,25 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-      <div className="mx-auto max-w-6xl px-4 flex items-center justify-between h-16">
-        <Link to="/" className="flex items-center h-full py-1">
-          <img src="/logo.png" alt="La Llanerita" className="h-14 object-contain" />
-        </Link>
-
+      <div className="mx-auto max-w-6xl px-4 grid grid-cols-3 items-center h-16">
+        {/* Left: nav links (desktop) */}
         <div className="hidden md:flex items-center gap-1">
           {navLink("/", "Inicio", <Home className="h-4 w-4" />)}
           {navLink("/catalogo", "Catalogo", <ShoppingCart className="h-4 w-4" />)}
           {isAdmin && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
           {isAdmin && navLink("/admin", "Admin", <Shield className="h-4 w-4" />)}
         </div>
+        <div className="md:hidden" />
 
-        <div className="flex items-center gap-2">
+        {/* Center: logo */}
+        <div className="flex justify-center">
+          <Link to="/" className="flex items-center h-full py-1">
+            <img src="/logo.png" alt="La Llanerita" className="h-14 object-contain" />
+          </Link>
+        </div>
+
+        {/* Right: cart + user/menu */}
+        <div className="flex items-center justify-end gap-2">
           <Button size="sm" variant="ghost" className="relative text-gray-600 hover:text-blue-600" onClick={() => navigate("/checkout")}>
             <ShoppingCart className="h-5 w-5" />
             {itemCount > 0 && (
