@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap } from "lucide-react";
+import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap, MapPin } from "lucide-react";
 import HeroBanner from "../components/HeroBanner";
 import { api } from "../services/api";
 
@@ -77,6 +77,9 @@ export default function LandingPage() {
       </section>
 
       <footer className="bg-white border-t border-gray-200 py-8 px-4 text-center text-gray-400">
+        <p className="flex items-center justify-center gap-1 mb-2 text-gray-500">
+          <MapPin className="h-4 w-4" /> Cra 6 # 7-03 La Macarena, Meta 🇨🇴
+        </p>
         <p>&copy; 2026 Lallanerita.co - Todos los derechos reservados</p>
       </footer>
     </div>
