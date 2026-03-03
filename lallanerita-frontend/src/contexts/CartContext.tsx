@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 
 interface CartItem {
   product_id: number;
@@ -22,16 +22,46 @@ interface CartContextType {
 }
 
 const CartContext = createContext<CartContextType | null>(null);
+const CART_EXPIRY_MS = 10 * 60 * 1000; // 10 minutes
+
+function loadCart(): CartItem[] {
+  const saved = localStorage.getItem("cart");
+  const timestamp = localStorage.getItem("cart_timestamp");
+  if (!saved || !timestamp) return [];
+  const elapsed = Date.now() - Number(timestamp);
+  if (elapsed > CART_EXPIRY_MS) {
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cart_timestamp");
+    return [];
+  }
+  return JSON.parse(saved);
+}
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem("cart");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [items, setItems] = useState<CartItem[]>(loadCart);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(items));
+    if (items.length > 0) {
+      if (!localStorage.getItem("cart_timestamp")) {
+        localStorage.setItem("cart_timestamp", String(Date.now()));
+      }
+    } else {
+      localStorage.removeItem("cart_timestamp");
+    }
   }, [items]);
+
+  const clearExpired = useCallback(() => {
+    const timestamp = localStorage.getItem("cart_timestamp");
+    if (timestamp && Date.now() - Number(timestamp) > CART_EXPIRY_MS) {
+      setItems([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(clearExpired, 30_000); // check every 30s
+    return () => clearInterval(interval);
+  }, [clearExpired]);
 
   const addItem = (item: Omit<CartItem, "quantity">, quantity: number) => {
     setItems((prev) => {
