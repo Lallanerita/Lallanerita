@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { api } from "../services/api";
 import { useCart } from "../contexts/CartContext";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ function formatCOP(n: number) {
 }
 
 export default function CatalogPage() {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -43,7 +45,9 @@ export default function CatalogPage() {
 
   useEffect(() => {
     api.getCategories().then(setCategories);
-  }, []);
+    const catParam = searchParams.get("categoria");
+    if (catParam) setSelectedCategory(Number(catParam));
+  }, [searchParams]);
 
   useEffect(() => {
     api.getProducts({ category_id: selectedCategory || undefined, search: search || undefined }).then(setProducts);

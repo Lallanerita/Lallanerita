@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, ShoppingCart, MessageCircle } from "lucide-react";
+import { Trash2, ShoppingCart, MessageCircle, Truck, Store } from "lucide-react";
 
 function formatCOP(n: number) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
@@ -21,6 +21,7 @@ export default function CheckoutPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [notes, setNotes] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState<"domicilio" | "recoger">("domicilio");
   const [guestData, setGuestData] = useState({ guest_name: "", guest_phone: "", guest_address: "", payment_method: "efectivo" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -28,6 +29,7 @@ export default function CheckoutPage() {
   const buildWhatsAppMessage = (orderId?: number) => {
     let msg = `*Nuevo Pedido - La Llanerita*\n`;
     if (orderId) msg += `Pedido #${orderId}\n`;
+    msg += `*Entrega:* ${deliveryMethod === "recoger" ? "Recoger en tienda (Cra 6 # 7-03 La Macarena)" : "Domicilio"}\n`;
     msg += `\n`;
     if (user) {
       msg += `*Cliente:* ${user.name}\n`;
@@ -35,7 +37,7 @@ export default function CheckoutPage() {
     } else {
       msg += `*Cliente:* ${guestData.guest_name}\n`;
       msg += `*Tel:* ${guestData.guest_phone}\n`;
-      msg += `*Dir:* ${guestData.guest_address}\n`;
+      if (deliveryMethod === "domicilio") msg += `*Dir:* ${guestData.guest_address}\n`;
       msg += `*Pago:* ${guestData.payment_method}\n`;
     }
     msg += `\n*Productos:*\n`;
@@ -126,9 +128,35 @@ export default function CheckoutPage() {
           </CardContent>
         </Card>
 
+        <Card className="bg-white border-gray-200 shadow-sm mb-6">
+          <CardHeader><CardTitle className="text-gray-900 text-lg">Metodo de Entrega</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${deliveryMethod === "domicilio" ? "border-blue-600 bg-blue-50" : "border-gray-200 bg-white hover:border-gray-300"}`}
+                onClick={() => setDeliveryMethod("domicilio")}
+              >
+                <Truck className={`h-8 w-8 ${deliveryMethod === "domicilio" ? "text-blue-600" : "text-gray-400"}`} />
+                <span className={`font-bold text-sm ${deliveryMethod === "domicilio" ? "text-blue-600" : "text-gray-600"}`}>Domicilio</span>
+                <span className="text-xs text-gray-400">Te lo llevamos</span>
+              </button>
+              <button
+                type="button"
+                className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${deliveryMethod === "recoger" ? "border-blue-600 bg-blue-50" : "border-gray-200 bg-white hover:border-gray-300"}`}
+                onClick={() => setDeliveryMethod("recoger")}
+              >
+                <Store className={`h-8 w-8 ${deliveryMethod === "recoger" ? "text-blue-600" : "text-gray-400"}`} />
+                <span className={`font-bold text-sm ${deliveryMethod === "recoger" ? "text-blue-600" : "text-gray-600"}`}>Recoger en Tienda</span>
+                <span className="text-xs text-gray-400">Cra 6 # 7-03</span>
+              </button>
+            </div>
+          </CardContent>
+        </Card>
+
         {!user && (
           <Card className="bg-white border-gray-200 shadow-sm mb-6">
-            <CardHeader><CardTitle className="text-gray-900 text-lg">Datos de Envio</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-gray-900 text-lg">{deliveryMethod === "domicilio" ? "Datos de Envio" : "Datos de Contacto"}</CardTitle></CardHeader>
             <CardContent className="space-y-3">
               <div>
                 <Label className="text-gray-600">Nombre *</Label>
@@ -138,10 +166,12 @@ export default function CheckoutPage() {
                 <Label className="text-gray-600">Telefono *</Label>
                 <Input required className="bg-gray-50 border-gray-300 text-gray-900" value={guestData.guest_phone} onChange={(e) => setGuestData({ ...guestData, guest_phone: e.target.value })} />
               </div>
-              <div>
-                <Label className="text-gray-600">Direccion *</Label>
-                <Input required className="bg-gray-50 border-gray-300 text-gray-900" value={guestData.guest_address} onChange={(e) => setGuestData({ ...guestData, guest_address: e.target.value })} />
-              </div>
+              {deliveryMethod === "domicilio" && (
+                <div>
+                  <Label className="text-gray-600">Direccion *</Label>
+                  <Input required className="bg-gray-50 border-gray-300 text-gray-900" value={guestData.guest_address} onChange={(e) => setGuestData({ ...guestData, guest_address: e.target.value })} />
+                </div>
+              )}
               <div>
                 <Label className="text-gray-600">Metodo de Pago</Label>
                 <select className="w-full rounded-md bg-gray-50 border border-gray-300 text-gray-900 p-2 text-sm" value={guestData.payment_method} onChange={(e) => setGuestData({ ...guestData, payment_method: e.target.value })}>
@@ -163,7 +193,7 @@ export default function CheckoutPage() {
         </Card>
 
         <div className="flex gap-3">
-          <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold" onClick={handleSubmit} disabled={loading || (!user && (!guestData.guest_name || !guestData.guest_phone || !guestData.guest_address))}>
+          <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold" onClick={handleSubmit} disabled={loading || (!user && (!guestData.guest_name || !guestData.guest_phone || (deliveryMethod === "domicilio" && !guestData.guest_address)))}>
             <ShoppingCart className="mr-2 h-4 w-4" />
             {loading ? "Enviando..." : "Confirmar Pedido"}
           </Button>

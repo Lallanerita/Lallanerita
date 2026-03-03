@@ -3,17 +3,33 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap, MapPin, Tag } from "lucide-react";
+import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap, MapPin, Tag, Apple, Beef, Wine, SprayCan, ShoppingBasket } from "lucide-react";
 import HeroBanner from "../components/HeroBanner";
 import { api } from "../services/api";
 
 interface Service { id: number; title: string; description: string | null; icon: string; display_order: number; }
 interface Product { id: number; name: string; price: number; unit: string; image_url: string | null; discount_percent: number | null; final_price: number; category_name: string | null; }
+interface Category { id: number; name: string; description: string | null; image_url: string | null; }
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Store, ShoppingBag, Truck, Package, Heart, Star, Zap, MessageCircle,
 };
 
+const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Despensa": ShoppingBasket,
+  "Frutas y verduras": Apple,
+  "Aseo": SprayCan,
+  "Carnes": Beef,
+  "Licores": Wine,
+};
+
+const CATEGORY_COLORS: Record<string, string> = {
+  "Despensa": "from-amber-400 to-amber-600",
+  "Frutas y verduras": "from-green-400 to-green-600",
+  "Aseo": "from-cyan-400 to-cyan-600",
+  "Carnes": "from-red-400 to-red-600",
+  "Licores": "from-purple-400 to-purple-600",
+};
 
 function formatCOP(n: number) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
@@ -23,10 +39,12 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [promoProducts, setPromoProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     api.getServices(true).then(setServices).catch(() => {});
+    api.getCategories().then(setCategories).catch(() => {});
     api.getProducts({ active_only: true }).then((products: Product[]) => {
       setPromoProducts(products.filter((p) => p.discount_percent && p.discount_percent > 0));
     }).catch(() => {});
@@ -52,6 +70,32 @@ export default function LandingPage() {
           </Button>
         </div>
       </section>
+
+      {categories.length > 0 && (
+        <section className="bg-white py-12 px-4">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">Explora por Categoria</h2>
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+              {categories.map((cat) => {
+                const Icon = CATEGORY_ICONS[cat.name] || ShoppingBasket;
+                const colors = CATEGORY_COLORS[cat.name] || "from-blue-400 to-blue-600";
+                return (
+                  <div
+                    key={cat.id}
+                    className="group cursor-pointer"
+                    onClick={() => navigate(`/catalogo?categoria=${cat.id}`)}
+                  >
+                    <div className={`relative flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br ${colors} p-6 h-36 shadow-md hover:shadow-xl transition-all hover:scale-105`}>
+                      <Icon className="h-12 w-12 text-white mb-3 drop-shadow-md" />
+                      <h3 className="text-white font-bold text-sm md:text-base text-center drop-shadow-md">{cat.name}</h3>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {promoProducts.length > 0 && (
         <section className="bg-white py-12 px-4">
