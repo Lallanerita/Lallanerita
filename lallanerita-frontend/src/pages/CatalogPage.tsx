@@ -75,12 +75,12 @@ export default function CatalogPage() {
           </div>
         </div>
       </div>
-      <div className="sticky top-[52px] z-10 bg-blue-600 px-4 py-3 shadow-md">
+      <div className="sticky top-[52px] z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200 px-4 py-3">
         <div className="mx-auto max-w-6xl flex gap-2 overflow-x-auto pb-1">
           <Button
             size="sm"
             variant={selectedCategory === null ? "default" : "outline"}
-            className={selectedCategory === null ? "bg-white text-blue-700 font-bold hover:bg-gray-100" : "border-white/50 text-white bg-blue-500 hover:bg-blue-400 font-semibold"}
+            className={selectedCategory === null ? "bg-blue-600 text-white font-bold" : "border-gray-300 text-gray-700 font-semibold hover:bg-gray-100"}
             onClick={() => setSelectedCategory(null)}
           >
             Todos
@@ -90,7 +90,7 @@ export default function CatalogPage() {
               key={c.id}
               size="sm"
               variant={selectedCategory === c.id ? "default" : "outline"}
-              className={selectedCategory === c.id ? "bg-white text-blue-700 font-bold hover:bg-gray-100" : "border-white/50 text-white bg-blue-500 hover:bg-blue-400 font-semibold"}
+              className={selectedCategory === c.id ? "bg-blue-600 text-white font-bold" : "border-gray-300 text-gray-700 font-semibold hover:bg-gray-100"}
               onClick={() => setSelectedCategory(c.id)}
             >
               {c.name}
