@@ -42,19 +42,29 @@ export default function LandingPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [promoProducts, setPromoProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   useEffect(() => {
-    api.getServices(true).then(setServices).catch(() => {});
-    api.getCategories().then(setCategories).catch(() => {});
-    api.getProducts({ active_only: true }).then((products: Product[]) => {
-      setPromoProducts(products.filter((p) => p.discount_percent && p.discount_percent > 0));
-    }).catch(() => {});
+    Promise.all([
+      api.getServices(true).then(setServices).catch(() => {}),
+      api.getCategories().then(setCategories).catch(() => {}),
+      api.getProducts({ active_only: true }).then((products: Product[]) => {
+        setPromoProducts(products.filter((p) => p.discount_percent && p.discount_percent > 0));
+      }).catch(() => {}),
+    ]).finally(() => setLoading(false));
   }, []);
 
 
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-10">
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-32">
+          <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          <p className="mt-4 text-gray-400 text-sm">Cargando...</p>
+        </div>
+      ) : (
+        <>
       <HeroBanner />
 
       {categories.length > 0 && (
@@ -163,6 +173,8 @@ export default function LandingPage() {
         <p>&copy; 2026 Lallanerita.co - Todos los derechos reservados</p>
       </footer>
       </ScrollReveal>
+        </>
+      )}
     </div>
   );
 }
