@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Package, Tag, Users, ShoppingCart, Image, ImagePlus, Settings } from "lucide-react";
+import { Plus, Pencil, Trash2, Package, Tag, Users, ShoppingCart, Image, ImagePlus, Settings, Lock } from "lucide-react";
 
 function formatCOP(n: number) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
@@ -565,6 +565,69 @@ function UsersTab() {
   );
 }
 
+function ConfigTab() {
+  const [form, setForm] = useState({ current_password: "", new_password: "", confirm_password: "" });
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const handleChangePassword = async () => {
+    setMessage(null);
+    if (!form.current_password || !form.new_password) {
+      setMessage({ type: "error", text: "Todos los campos son obligatorios" });
+      return;
+    }
+    if (form.new_password.length < 6) {
+      setMessage({ type: "error", text: "La nueva contrasena debe tener al menos 6 caracteres" });
+      return;
+    }
+    if (form.new_password !== form.confirm_password) {
+      setMessage({ type: "error", text: "Las contrasenas no coinciden" });
+      return;
+    }
+    setSaving(true);
+    try {
+      await api.changePassword(form.current_password, form.new_password);
+      setMessage({ type: "success", text: "Contrasena actualizada exitosamente" });
+      setForm({ current_password: "", new_password: "", confirm_password: "" });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Error al cambiar contrasena";
+      setMessage({ type: "error", text: msg });
+    }
+    setSaving(false);
+  };
+
+  return (
+    <div>
+      <h2 className="text-lg font-bold text-gray-900 mb-4">Configuracion</h2>
+      <Card className="bg-white border-gray-200">
+        <CardContent className="p-4 space-y-4">
+          <h3 className="font-bold text-gray-900 flex items-center gap-2"><Lock className="h-4 w-4 text-blue-600" /> Cambiar Contrasena</h3>
+          {message && (
+            <div className={`p-3 rounded text-sm ${message.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-600"}`}>
+              {message.text}
+            </div>
+          )}
+          <div>
+            <Label className="text-gray-600">Contrasena actual *</Label>
+            <Input type="password" className="bg-gray-50 border-gray-300 text-gray-900" value={form.current_password} onChange={(e) => setForm({ ...form, current_password: e.target.value })} />
+          </div>
+          <div>
+            <Label className="text-gray-600">Nueva contrasena *</Label>
+            <Input type="password" className="bg-gray-50 border-gray-300 text-gray-900" value={form.new_password} onChange={(e) => setForm({ ...form, new_password: e.target.value })} />
+          </div>
+          <div>
+            <Label className="text-gray-600">Confirmar nueva contrasena *</Label>
+            <Input type="password" className="bg-gray-50 border-gray-300 text-gray-900" value={form.confirm_password} onChange={(e) => setForm({ ...form, confirm_password: e.target.value })} />
+          </div>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleChangePassword} disabled={saving}>
+            {saving ? "Guardando..." : "Cambiar Contrasena"}
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const { user, isAdmin, loading, token } = useAuth();
 
@@ -594,6 +657,7 @@ export default function AdminPage() {
             <TabsTrigger value="banners" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-xs"><ImagePlus className="h-3 w-3 mr-1" />Banners</TabsTrigger>
             <TabsTrigger value="services" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-xs"><Settings className="h-3 w-3 mr-1" />Servicios</TabsTrigger>
             <TabsTrigger value="users" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-xs"><Users className="h-3 w-3 mr-1" />Usuarios</TabsTrigger>
+            <TabsTrigger value="config" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-xs"><Settings className="h-3 w-3 mr-1" />Config</TabsTrigger>
           </TabsList>
           <TabsContent value="products"><ProductsTab /></TabsContent>
           <TabsContent value="categories"><CategoriesTab /></TabsContent>
@@ -602,6 +666,7 @@ export default function AdminPage() {
           <TabsContent value="banners"><BannersTab /></TabsContent>
           <TabsContent value="services"><ServicesTab /></TabsContent>
           <TabsContent value="users"><UsersTab /></TabsContent>
+          <TabsContent value="config"><ConfigTab /></TabsContent>
         </Tabs>
       </div>
     </div>
