@@ -14,11 +14,6 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Store, ShoppingBag, Truck, Package, Heart, Star, Zap, MessageCircle,
 };
 
-const DEFAULT_SERVICES = [
-  { id: 0, title: "Catalogo Online", description: "Explora nuestra amplia variedad de productos actualizados.", icon: "Store" },
-  { id: 0, title: "Pedidos Faciles", description: "Realiza tu pedido en minutos desde tu celular o computador.", icon: "ShoppingBag" },
-  { id: 0, title: "Entrega Rapida", description: "Recibe tus productos de forma rapida y segura.", icon: "Truck" },
-];
 
 function formatCOP(n: number) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
@@ -37,7 +32,6 @@ export default function LandingPage() {
     }).catch(() => {});
   }, []);
 
-  const displayServices = services.length > 0 ? services : DEFAULT_SERVICES;
 
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-10">
@@ -115,23 +109,25 @@ export default function LandingPage() {
         </section>
       )}
 
-      <section className="bg-gray-50 py-16 px-4">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-3xl font-bold text-center mb-12 text-blue-600">Nuestros Servicios</h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            {displayServices.map((s, i) => {
-              const Icon = ICON_MAP[s.icon] || Store;
-              return (
-                <div key={s.id || i} className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-                  <Icon className="h-12 w-12 text-blue-600 mb-4" />
-                  <h3 className="text-xl font-bold mb-2 text-gray-900">{s.title}</h3>
-                  <p className="text-gray-500">{s.description}</p>
-                </div>
-              );
-            })}
+      {services.length > 0 && (
+        <section className="bg-gray-50 py-16 px-4">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-3xl font-bold text-center mb-12 text-blue-600">Nuestros Servicios</h2>
+            <div className="grid gap-8 md:grid-cols-3">
+              {services.map((s) => {
+                const Icon = ICON_MAP[s.icon] || Store;
+                return (
+                  <div key={s.id} className="flex flex-col items-center text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
+                    <Icon className="h-12 w-12 text-blue-600 mb-4" />
+                    <h3 className="text-xl font-bold mb-2 text-gray-900">{s.title}</h3>
+                    <p className="text-gray-500">{s.description}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <footer className="bg-white border-t border-gray-200 py-8 px-4 text-center text-gray-400">
         <p className="flex items-center justify-center gap-1 mb-2 text-gray-500">
