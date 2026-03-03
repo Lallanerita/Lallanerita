@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap, MapPin, Tag, Apple, Beef, Wine, SprayCan, ShoppingBasket } from "lucide-react";
@@ -57,24 +56,6 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-10">
       <HeroBanner />
-
-      <ScrollReveal>
-        <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center bg-gradient-to-b from-blue-50 to-white">
-          <p className="mx-auto max-w-2xl text-lg text-gray-500 mb-8">
-            Explora nuestro catalogo, haz tu pedido y recibelo a la puerta de tu casa!
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8"
-              onClick={() => navigate("/catalogo")}
-            >
-              <ShoppingBag className="mr-2 h-5 w-5" />
-              Ver Catalogo
-            </Button>
-          </div>
-        </section>
-      </ScrollReveal>
 
       {categories.length > 0 && (
         <ScrollReveal>
