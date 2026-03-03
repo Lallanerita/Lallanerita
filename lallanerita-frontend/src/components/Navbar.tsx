@@ -42,7 +42,7 @@ export default function Navbar() {
       </nav>
 
       {/* Floating island - right side, vertically centered */}
-      <div className="fixed left-3 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2 bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg px-2 py-3">
+      <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2 bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg px-2 py-3">
         <button
           className="relative p-2 rounded-xl text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
           onClick={() => navigate("/checkout")}
@@ -83,7 +83,7 @@ export default function Navbar() {
 
       {/* Slide-out menu panel */}
       {menuOpen && (
-        <div className="fixed left-16 top-1/2 -translate-y-1/2 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl px-4 py-4 space-y-1 min-w-48">
+        <div className="fixed right-16 top-1/2 -translate-y-1/2 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl px-4 py-4 space-y-1 min-w-48">
           {navLink("/", "Inicio", <Home className="h-4 w-4" />)}
           {navLink("/catalogo", "Catalogo", <ShoppingCart className="h-4 w-4" />)}
           {isAdmin && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
