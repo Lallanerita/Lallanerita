@@ -35,7 +35,9 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-10">
-      <section className="relative flex flex-col items-center justify-center px-4 py-24 text-center bg-gradient-to-b from-blue-50 to-white">
+      <HeroBanner />
+
+      <section className="relative flex flex-col items-center justify-center px-4 py-16 text-center bg-gradient-to-b from-blue-50 to-white">
         <p className="mx-auto max-w-2xl text-lg text-gray-500 mb-8">
           Tu tienda en linea con los mejores productos. Explora nuestro catalogo, haz tu pedido y recibelo donde estes.
         </p>
@@ -61,8 +63,6 @@ export default function LandingPage() {
           </Button>
         </div>
       </section>
-
-      <HeroBanner />
 
       {promoProducts.length > 0 && (
         <section className="bg-white py-12 px-4">
