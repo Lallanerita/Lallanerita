@@ -40,7 +40,7 @@ export default function LandingPage() {
   const displayServices = services.length > 0 ? services : DEFAULT_SERVICES;
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-white text-gray-900 pb-10">
       <section className="relative flex flex-col items-center justify-center px-4 py-24 text-center bg-gradient-to-b from-blue-50 to-white">
         <p className="mx-auto max-w-2xl text-lg text-gray-500 mb-8">
           Tu tienda en linea con los mejores productos. Explora nuestro catalogo, haz tu pedido y recibelo donde estes.
@@ -133,20 +133,21 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <div className="bg-blue-600 overflow-hidden py-3">
-        <div className="animate-marquee whitespace-nowrap text-white font-bold text-lg">
-          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
-          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
-          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
-        </div>
-      </div>
-
       <footer className="bg-white border-t border-gray-200 py-8 px-4 text-center text-gray-400">
         <p className="flex items-center justify-center gap-1 mb-2 text-gray-500">
           <MapPin className="h-4 w-4" /> Cra 6 # 7-03 La Macarena, Meta 🇨🇴
         </p>
         <p>&copy; 2026 Lallanerita.co - Todos los derechos reservados</p>
       </footer>
+
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-blue-600 overflow-hidden py-2">
+        <div className="animate-marquee whitespace-nowrap text-white font-bold text-sm md:text-base">
+          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+        </div>
+      </div>
     </div>
   );
 }
