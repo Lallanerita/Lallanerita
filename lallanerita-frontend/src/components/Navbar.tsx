@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
-import { Button } from "@/components/ui/button";
+
 import { ShoppingCart, User, LogOut, Shield, Package, Home, Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -25,69 +25,80 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-      <div className="mx-auto max-w-6xl px-4 grid grid-cols-3 items-center h-16">
-        {/* Left: nav links (desktop) */}
-        <div className="hidden md:flex items-center gap-1">
-          {navLink("/", "Inicio", <Home className="h-4 w-4" />)}
-          {navLink("/catalogo", "Catalogo", <ShoppingCart className="h-4 w-4" />)}
-          {isAdmin && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
-          {isAdmin && navLink("/admin", "Admin", <Shield className="h-4 w-4" />)}
-        </div>
-        <div className="md:hidden" />
-
-        {/* Center: logo */}
-        <div className="flex justify-center">
-          <Link to="/" className="flex items-center h-full py-1">
-            <img src="/logo.png" alt="La Llanerita" className="h-14 object-contain" />
+    <>
+      {/* Navbar: only big centered logo + desktop nav links */}
+      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div className="flex items-center justify-center py-1">
+          <Link to="/">
+            <img src="/logo.png" alt="La Llanerita" className="h-16 md:h-20 object-contain" />
           </Link>
         </div>
-
-        {/* Right: cart + user/menu */}
-        <div className="flex items-center justify-end gap-2">
-          <Button size="sm" variant="ghost" className="relative text-gray-600 hover:text-blue-600" onClick={() => navigate("/checkout")}>
-            <ShoppingCart className="h-5 w-5" />
-            {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">{itemCount}</span>
-            )}
-          </Button>
-
-          {user ? (
-            <div className="hidden md:flex items-center gap-2">
-              <span className="text-sm text-gray-500">{user.name}</span>
-              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-red-500" onClick={() => { logout(); navigate("/"); }}>
-                <LogOut className="h-4 w-4" />
-              </Button>
-            </div>
-          ) : (
-            <Button size="sm" className="hidden md:flex bg-blue-600 hover:bg-blue-700 text-white font-bold" onClick={() => navigate("/login")}>
-              <User className="h-4 w-4 mr-1" /> Ingresar
-            </Button>
-          )}
-
-          <Button size="sm" variant="ghost" className="md:hidden text-gray-600" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+        <div className="hidden md:flex items-center justify-center gap-1 pb-2">
+          {navLink("/", "Inicio", <Home className="h-4 w-4" />)}
+          {navLink("/catalogo", "Catalogo", <ShoppingCart className="h-4 w-4" />)}
+          {isAdmin && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
+          {isAdmin && navLink("/admin", "Admin", <Shield className="h-4 w-4" />)}
         </div>
+      </nav>
+
+      {/* Floating island - right side, vertically centered */}
+      <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2 bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg px-2 py-3">
+        <button
+          className="relative p-2 rounded-xl text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+          onClick={() => navigate("/checkout")}
+          title="Carrito"
+        >
+          <ShoppingCart className="h-5 w-5" />
+          {itemCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">{itemCount}</span>
+          )}
+        </button>
+
+        {user ? (
+          <button
+            className="p-2 rounded-xl text-gray-600 hover:text-red-500 hover:bg-red-50 transition-colors"
+            onClick={() => { logout(); navigate("/"); }}
+            title="Cerrar Sesion"
+          >
+            <LogOut className="h-5 w-5" />
+          </button>
+        ) : (
+          <button
+            className="p-2 rounded-xl text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+            onClick={() => navigate("/login")}
+            title="Ingresar"
+          >
+            <User className="h-5 w-5" />
+          </button>
+        )}
+
+        <button
+          className="p-2 rounded-xl text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+          onClick={() => setMenuOpen(!menuOpen)}
+          title="Menu"
+        >
+          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
 
+      {/* Slide-out menu panel */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3 space-y-1">
+        <div className="fixed right-16 top-1/2 -translate-y-1/2 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl px-4 py-4 space-y-1 min-w-48">
           {navLink("/", "Inicio", <Home className="h-4 w-4" />)}
           {navLink("/catalogo", "Catalogo", <ShoppingCart className="h-4 w-4" />)}
           {isAdmin && navLink("/pedidos", "Pedidos", <Package className="h-4 w-4" />)}
           {isAdmin && navLink("/admin", "Admin", <Shield className="h-4 w-4" />)}
           {user ? (
-            <button className="flex items-center gap-1.5 px-3 py-2 text-sm text-red-500 w-full" onClick={() => { logout(); navigate("/"); setMenuOpen(false); }}>
+            <button className="flex items-center gap-1.5 px-3 py-2 text-sm text-red-500 w-full rounded-lg hover:bg-red-50" onClick={() => { logout(); navigate("/"); setMenuOpen(false); }}>
               <LogOut className="h-4 w-4" /> Cerrar Sesion
             </button>
           ) : (
-            <Link to="/login" className="flex items-center gap-1.5 px-3 py-2 text-sm text-blue-600" onClick={() => setMenuOpen(false)}>
+            <Link to="/login" className="flex items-center gap-1.5 px-3 py-2 text-sm text-blue-600 rounded-lg hover:bg-blue-50" onClick={() => setMenuOpen(false)}>
               <User className="h-4 w-4" /> Ingresar
             </Link>
           )}
         </div>
       )}
-    </nav>
+    </>
   );
 }
