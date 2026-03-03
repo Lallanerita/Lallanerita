@@ -9,7 +9,16 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		colors: {}
+  		colors: {},
+  		animation: {
+  			marquee: 'marquee 15s linear infinite',
+  		},
+  		keyframes: {
+  			marquee: {
+  				'0%': { transform: 'translateX(100%)' },
+  				'100%': { transform: 'translateX(-100%)' },
+  			},
+  		},
   	}
   },
   plugins: [import("tailwindcss-animate")],

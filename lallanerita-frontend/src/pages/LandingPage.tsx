@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap, MapPin } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingBag, MessageCircle, Store, Truck, Package, Heart, Star, Zap, MapPin, Tag } from "lucide-react";
 import HeroBanner from "../components/HeroBanner";
 import { api } from "../services/api";
 
 interface Service { id: number; title: string; description: string | null; icon: string; display_order: number; }
+interface Product { id: number; name: string; price: number; unit: string; image_url: string | null; discount_percent: number | null; final_price: number; category_name: string | null; }
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Store, ShoppingBag, Truck, Package, Heart, Star, Zap, MessageCircle,
@@ -17,12 +20,21 @@ const DEFAULT_SERVICES = [
   { id: 0, title: "Entrega Rapida", description: "Recibe tus productos de forma rapida y segura.", icon: "Truck" },
 ];
 
+function formatCOP(n: number) {
+  return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(n);
+}
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
+  const [promoProducts, setPromoProducts] = useState<Product[]>([]);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     api.getServices(true).then(setServices).catch(() => {});
+    api.getProducts({ active_only: true }).then((products: Product[]) => {
+      setPromoProducts(products.filter((p) => p.discount_percent && p.discount_percent > 0));
+    }).catch(() => {});
   }, []);
 
   const displayServices = services.length > 0 ? services : DEFAULT_SERVICES;
@@ -58,6 +70,51 @@ export default function LandingPage() {
 
       <HeroBanner />
 
+      {promoProducts.length > 0 && (
+        <section className="bg-white py-12 px-4">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-3xl font-bold text-center mb-8 text-red-600 flex items-center justify-center gap-2">
+              <Tag className="h-7 w-7" /> Promociones
+            </h2>
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {promoProducts.map((p) => (
+                <Card
+                  key={p.id}
+                  className="bg-white border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => navigate("/catalogo")}
+                >
+                  <div className="relative aspect-square bg-gray-100">
+                    {p.image_url ? (
+                      <img
+                        src={p.image_url.startsWith("http") ? p.image_url : `${API_URL}${p.image_url}`}
+                        alt={p.name}
+                        loading="lazy"
+                        className="w-full h-full object-contain p-2"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-300">
+                        <ShoppingBag className="h-10 w-10" />
+                      </div>
+                    )}
+                    <Badge className="absolute top-2 right-2 bg-red-600 text-white text-xs">
+                      <Tag className="h-3 w-3 mr-1" />-{p.discount_percent}%
+                    </Badge>
+                  </div>
+                  <CardContent className="p-3">
+                    <h3 className="font-bold text-gray-900 text-sm truncate">{p.name}</h3>
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="text-xs line-through text-gray-400">{formatCOP(p.price)}</span>
+                      <span className="text-sm font-bold text-red-600">{formatCOP(p.final_price)}</span>
+                    </div>
+                    <span className="text-xs text-gray-500">/ {p.unit}</span>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="bg-gray-50 py-16 px-4">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl font-bold text-center mb-12 text-blue-600">Nuestros Servicios</h2>
@@ -75,6 +132,14 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <div className="bg-blue-600 overflow-hidden py-3">
+        <div className="animate-marquee whitespace-nowrap text-white font-bold text-lg">
+          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+          <span className="mx-16">Domicilio Gratis por compras mayores a $100.000</span>
+        </div>
+      </div>
 
       <footer className="bg-white border-t border-gray-200 py-8 px-4 text-center text-gray-400">
         <p className="flex items-center justify-center gap-1 mb-2 text-gray-500">
