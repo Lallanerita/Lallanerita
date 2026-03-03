@@ -153,6 +153,6 @@ async def delete_product(product_id: int, admin: dict = Depends(get_admin_user),
     cursor = await db.execute("SELECT id FROM products WHERE id = ?", (product_id,))
     if not await cursor.fetchone():
         raise HTTPException(status_code=404, detail="Producto no encontrado")
-    await db.execute("UPDATE products SET is_active = 0 WHERE id = ?", (product_id,))
+    await db.execute("DELETE FROM products WHERE id = ?", (product_id,))
     await db.commit()
-    return {"message": "Producto desactivado exitosamente"}
+    return {"message": "Producto eliminado exitosamente"}

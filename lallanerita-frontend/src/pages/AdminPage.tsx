@@ -72,7 +72,7 @@ function ProductsTab() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Desactivar este producto?")) return;
+    if (!confirm("Eliminar este producto?")) return;
     await api.deleteProduct(id);
     api.getProducts({ active_only: false }).then(setProducts);
   };
