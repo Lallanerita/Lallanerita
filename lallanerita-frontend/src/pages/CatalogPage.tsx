@@ -112,6 +112,7 @@ export default function CatalogPage() {
                     <img
                       src={p.image_url.startsWith("http") ? p.image_url : `${API_URL}${p.image_url}`}
                       alt={p.name}
+                      loading="lazy"
                       className="w-full h-full object-contain p-2"
                     />
                   ) : (
