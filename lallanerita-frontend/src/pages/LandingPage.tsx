@@ -21,6 +21,7 @@ const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>
   "Aseo": SprayCan,
   "Carnes": Beef,
   "Licores": Wine,
+  "Otros": Package,
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -29,6 +30,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   "Aseo": "from-cyan-400 to-cyan-600",
   "Carnes": "from-red-400 to-red-600",
   "Licores": "from-purple-400 to-purple-600",
+  "Otros": "from-gray-400 to-gray-600",
 };
 
 function formatCOP(n: number) {
@@ -75,7 +77,7 @@ export default function LandingPage() {
         <section className="bg-white py-12 px-4">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">Explora por Categoria</h2>
-            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
               {categories.map((cat) => {
                 const Icon = CATEGORY_ICONS[cat.name] || ShoppingBasket;
                 const colors = CATEGORY_COLORS[cat.name] || "from-blue-400 to-blue-600";
