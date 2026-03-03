@@ -14,6 +14,7 @@ aiofiles = "^25.1.0"
 pyjwt = "^2.11.0"
 bcrypt = "^5.0.0"
 python-multipart = "^0.0.22"
+pillow = "^12.1.1"
 
 
 [build-system]
