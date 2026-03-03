@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../services/api";
+import { useAuth } from "../contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -78,7 +79,8 @@ function ProductsTab() {
       setProducts((prev) => prev.filter((p) => p.id !== id));
       setDeleteConfirmId(null);
     } catch (err) {
-      alert("Error al eliminar producto");
+      const msg = err instanceof Error ? err.message : "Error desconocido";
+      alert(`Error al eliminar producto: ${msg}`);
     }
   };
 
@@ -564,6 +566,21 @@ function UsersTab() {
 }
 
 export default function AdminPage() {
+  const { user, isAdmin, loading, token } = useAuth();
+
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><p className="text-gray-500">Cargando...</p></div>;
+
+  if (!token || !user || !isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">Debes iniciar sesion como administrador para acceder a este panel.</p>
+          <a href="/login" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Iniciar Sesion</a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-4">
       <div className="mx-auto max-w-4xl">
