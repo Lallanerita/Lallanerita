@@ -71,10 +71,15 @@ function ProductsTab() {
     resetForm();
   };
 
+  const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
   const handleDelete = async (id: number) => {
-    if (!confirm("Eliminar este producto?")) return;
-    await api.deleteProduct(id);
-    api.getProducts({ active_only: false }).then(setProducts);
+    try {
+      await api.deleteProduct(id);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+      setDeleteConfirmId(null);
+    } catch (err) {
+      alert("Error al eliminar producto");
+    }
   };
 
   return (
@@ -133,7 +138,11 @@ function ProductsTab() {
               </div>
               <span className="text-sm font-bold text-blue-600 whitespace-nowrap">{formatCOP(p.price)}</span>
               <Button size="sm" variant="ghost" className="text-gray-500 h-8 w-8 p-0" onClick={() => openEdit(p)}><Pencil className="h-4 w-4" /></Button>
-              <Button size="sm" variant="ghost" className="text-red-400 h-8 w-8 p-0" onClick={() => handleDelete(p.id)}><Trash2 className="h-4 w-4" /></Button>
+              {deleteConfirmId === p.id ? (
+                <Button size="sm" variant="ghost" className="text-red-600 text-xs px-2 h-8 font-bold" onClick={() => handleDelete(p.id)}>Confirmar</Button>
+              ) : (
+                <Button size="sm" variant="ghost" className="text-red-400 h-8 w-8 p-0" onClick={() => setDeleteConfirmId(p.id)}><Trash2 className="h-4 w-4" /></Button>
+              )}
             </CardContent>
           </Card>
         ))}
