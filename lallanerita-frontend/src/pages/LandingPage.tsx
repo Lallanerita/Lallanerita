@@ -178,6 +178,7 @@ export default function LandingPage() {
         <p className="flex items-center justify-center gap-1 mb-2 text-gray-500">
           <MapPin className="h-4 w-4" /> Cra 6 # 7-03 La Macarena, Meta 🇨🇴
         </p>
+        <p className="text-gray-500 mb-2">Contacto: 3112110480</p>
         <p>&copy; 2026 Lallanerita.co - Todos los derechos reservados</p>
       </footer>
       </ScrollReveal>
