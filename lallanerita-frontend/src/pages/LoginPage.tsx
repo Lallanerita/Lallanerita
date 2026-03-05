@@ -33,7 +33,7 @@ export default function LoginPage() {
       <ScrollReveal>
       <Card className="w-full max-w-md bg-white border-gray-200 shadow-sm">
         <CardHeader className="text-center">
-          <img src="/logo.png" alt="La Llanerita" className="h-16 w-16 rounded-full mx-auto mb-2 object-cover" />
+          <img src="/sombrero.png" alt="La Llanerita" className="h-20 w-20 mx-auto mb-2 object-contain" />
           <CardTitle className="text-2xl text-gray-900">Administrador</CardTitle>
         </CardHeader>
         <CardContent>
