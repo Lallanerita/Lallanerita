@@ -42,7 +42,7 @@ export default function CatalogPage() {
   const [search, setSearch] = useState("");
   const [quantities, setQuantities] = useState<Record<number, number>>({});
   const { addItem, items } = useCart();
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  const API_URL = import.meta.env.VITE_API_URL || "https://app-czbfsnbs.fly.dev";
 
   useEffect(() => {
     api.getCategories().then(setCategories);

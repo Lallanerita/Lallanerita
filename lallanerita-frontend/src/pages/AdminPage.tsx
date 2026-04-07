@@ -132,7 +132,7 @@ function ProductsTab() {
           <Card key={p.id} className={`bg-white border-gray-200 ${!p.is_active ? "opacity-50" : ""}`}>
             <CardContent className="p-3 flex items-center gap-3">
               <div className="h-12 w-12 rounded bg-gray-50 flex-shrink-0 overflow-hidden">
-                {p.image_url ? <img src={p.image_url.startsWith("http") ? p.image_url : `${import.meta.env.VITE_API_URL || "http://localhost:8000"}${p.image_url}`} alt="" className="w-full h-full object-cover" /> : <Package className="h-6 w-6 m-3 text-gray-600" />}
+                {p.image_url ? <img src={p.image_url.startsWith("http") ? p.image_url : `${import.meta.env.VITE_API_URL || "https://app-czbfsnbs.fly.dev"}${p.image_url}`} alt="" className="w-full h-full object-cover" /> : <Package className="h-6 w-6 m-3 text-gray-600" />}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-900 text-sm truncate">{p.name}</p>
@@ -417,7 +417,7 @@ function BannersTab() {
                   <Button size="sm" variant="outline" className="border-gray-300" asChild disabled={uploading}><span><Image className="h-4 w-4" /></span></Button>
                 </label>
               </div>
-              {form.image_url && <img src={form.image_url.startsWith("http") ? form.image_url : `${import.meta.env.VITE_API_URL || "http://localhost:8000"}${form.image_url}`} alt="Preview" className="mt-2 w-full h-32 object-cover rounded-lg" />}
+              {form.image_url && <img src={form.image_url.startsWith("http") ? form.image_url : `${import.meta.env.VITE_API_URL || "https://app-czbfsnbs.fly.dev"}${form.image_url}`} alt="Preview" className="mt-2 w-full h-32 object-cover rounded-lg" />}
             </div>
             <div><Label className="text-gray-600">Texto alternativo</Label><Input className="bg-gray-50 border-gray-300 text-gray-900" value={form.alt} onChange={(e) => setForm({ ...form, alt: e.target.value })} placeholder="Ej: Promocion carnes de res" /></div>
             <div><Label className="text-gray-600">Orden</Label><Input type="number" className="bg-gray-50 border-gray-300 text-gray-900" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: e.target.value })} /></div>
@@ -430,7 +430,7 @@ function BannersTab() {
           <Card key={b.id} className={`bg-white border-gray-200 ${!b.is_active ? "opacity-50" : ""}`}>
             <CardContent className="p-3 flex items-center gap-3">
               <div className="h-16 w-28 rounded bg-gray-50 flex-shrink-0 overflow-hidden">
-                <img src={b.image_url.startsWith("http") ? b.image_url : `${import.meta.env.VITE_API_URL || "http://localhost:8000"}${b.image_url}`} alt={b.alt || ""} className="w-full h-full object-cover" />
+                <img src={b.image_url.startsWith("http") ? b.image_url : `${import.meta.env.VITE_API_URL || "https://app-czbfsnbs.fly.dev"}${b.image_url}`} alt={b.alt || ""} className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-900 text-sm truncate">{b.alt || "Sin texto"}</p>
